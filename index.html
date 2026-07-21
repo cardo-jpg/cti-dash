@@ -3,160 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CTI · Congresso Trabalho Internacional</title>
+  <title>Congresso Trabalho Internacional · Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root{
-      --purple:#8b3dab; --purple-dark:#6a2585; --purple-deep:#2a0f42; --purple-card:#1e0a2e;
-      --purple-light:#c07be0; --amber:#f59e0b; --red:#ef4444; --good:#c898ea;
-      --bg:#0a0710; --surface:#161022; --border:#2a2038; --text:#f3eefa; --muted:#9a8bb0;
+      --bg:#0c0616; --surface:#170d28; --border:#2c1d44;
+      --purple:#7c3aed; --purple-l:#a855f7; --purple-d:#4c1d95;
+      --gold:#d9b45a; --gold-l:#f2d98a; --gold-d:#a98430;
+      --text:#f4eefb; --muted:#b0a0c8; --red:#f0788a; --green:#7fe0a8;
     }
     *{ box-sizing:border-box; }
-    body{ margin:0; color:var(--text); min-height:100vh; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; -webkit-font-smoothing:antialiased;
+    body{ margin:0; color:var(--text); min-height:100vh; font-family:'Georgia','Times New Roman',serif; -webkit-font-smoothing:antialiased;
       background:
-        radial-gradient(1100px 560px at 10% -8%, rgba(139,61,171,.32), transparent 62%),
-        radial-gradient(900px 500px at 100% 2%, rgba(120,80,210,.16), transparent 55%),
-        radial-gradient(800px 500px at 50% 120%, rgba(139,61,171,.14), transparent 60%),
-        #0a0710;
-      background-attachment:fixed; }
-    .page{ max-width:1400px; margin:0 auto; padding:24px 18px 60px; }
-
-    .top{ display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:18px; }
-    .logo{ height:54px; width:auto; display:block; }
+        radial-gradient(1200px 620px at 8% -10%, rgba(124,58,237,.30), transparent 60%),
+        radial-gradient(1000px 560px at 100% 0%, rgba(217,180,90,.12), transparent 55%),
+        radial-gradient(900px 560px at 50% 118%, rgba(124,58,237,.14), transparent 60%),
+        #0c0616; }
+    .num, table, .gauge-leg, .k, .v, .card, input, button, .tab, .preset { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; }
+    .page{ max-width:1280px; margin:0 auto; padding:22px 20px 40px; }
+    .top{ display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:22px; }
+    .brand{ display:flex; flex-direction:column; gap:2px; }
+    .brand .kicker{ font-family:-apple-system,sans-serif; font-size:.7rem; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); }
+    .brand h1{ margin:0; font-size:1.5rem; font-weight:700; letter-spacing:.01em; color:#fff; line-height:1.1; }
+    .brand h1 b{ color:var(--gold-l); font-weight:700; }
+    .brand .sub{ font-family:-apple-system,sans-serif; font-size:.72rem; color:var(--muted); margin-top:3px; letter-spacing:.02em; }
     .top-r{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-    .live{ display:inline-flex; align-items:center; gap:7px; font-size:.72rem; font-weight:700; letter-spacing:.06em; color:#e0c4f0; background:rgba(139,61,171,.18); border:1px solid rgba(192,123,224,.4); padding:6px 12px; border-radius:20px; }
-    .live::before{ content:''; width:7px; height:7px; border-radius:50%; background:var(--purple-light); box-shadow:0 0 9px var(--purple-light); animation:pulse 1.6s infinite; }
-    @keyframes pulse{ 0%,100%{ opacity:1; transform:scale(1);} 50%{ opacity:.4; transform:scale(.8);} }
-    .presets{ display:flex; background:var(--surface); border:1px solid var(--border); border-radius:9px; overflow:hidden; flex-wrap:wrap; }
-    .preset{ padding:7px 12px; font-size:.78rem; cursor:pointer; color:var(--muted); border:none; background:none; font-family:inherit; }
-    .preset.active{ background:var(--purple); color:#fff; }
-    .dates{ display:flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--border); border-radius:9px; padding:4px 8px; }
-    .dlbl{ font-size:.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-    .dates input[type=date]{ background:transparent; border:1px solid var(--border); border-radius:6px; color:#fff;
-      font-family:inherit; font-size:.76rem; padding:4px 6px; color-scheme:dark; cursor:pointer; }
-    .dates input[type=date]:focus{ outline:none; border-color:var(--purple); }
-    .dclear{ background:none; border:none; color:var(--muted); cursor:pointer; font-size:.9rem; padding:2px 4px; font-family:inherit; }
-    .dclear:hover{ color:#fff; }
-    .updated{ font-size:.72rem; color:var(--muted); }
-    .btn{ background:var(--surface); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:7px 13px; font-size:.78rem; cursor:pointer; font-family:inherit; }
-    .btn:hover{ background:#ffffff12; }
+    .live{ display:inline-flex; align-items:center; gap:6px; font-family:-apple-system,sans-serif; font-size:.66rem; font-weight:800; letter-spacing:.14em; color:#120a04; background:linear-gradient(120deg,var(--gold),var(--gold-l)); padding:5px 11px; border-radius:20px; }
+    .live::before{ content:''; width:7px; height:7px; border-radius:50%; background:#120a04; animation:pulse 1.6s infinite; }
+    @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.3} }
+    .presets,.dates{ display:inline-flex; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+    .dates{ gap:6px; padding:4px 9px; }
+    .preset{ padding:8px 13px; font-size:.78rem; cursor:pointer; color:var(--muted); border:none; background:none; }
+    .preset.active{ background:linear-gradient(120deg,var(--purple-d),var(--purple)); color:#fff; }
+    .dlbl{ font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+    .dates input[type=date]{ background:transparent; border:1px solid var(--border); border-radius:6px; color:#fff; font-size:.76rem; padding:4px 6px; color-scheme:dark; cursor:pointer; }
+    .dclear{ background:none; border:none; color:var(--muted); cursor:pointer; font-size:.9rem; }
+    .btn{ padding:9px 15px; border-radius:10px; border:1px solid var(--gold-d); background:rgba(217,180,90,.1); color:var(--gold-l); font-size:.8rem; font-weight:600; cursor:pointer; }
+    .btn:hover{ background:rgba(217,180,90,.2); }
+    .updated{ font-size:.68rem; color:var(--muted); }
+    .tabs{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:2px; }
+    .tab{ padding:10px 18px; font-size:.86rem; font-weight:600; cursor:pointer; color:var(--muted); border:none; background:none; border-bottom:2px solid transparent; margin-bottom:-2px; }
+    .tab:hover{ color:var(--text); }
+    .tab.active{ color:var(--gold-l); border-bottom-color:var(--gold); }
 
-    .tabs{ display:inline-flex; background:var(--surface); border:1px solid var(--border); border-radius:11px; overflow:hidden; margin-bottom:22px; }
-    .tab{ padding:10px 26px; font-size:.88rem; font-weight:600; cursor:pointer; color:var(--muted); border:none; background:none; font-family:inherit; }
-    .tab.active{ background:var(--purple); color:#fff; }
+    .gauges{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-bottom:20px; }
+    .gauge-card{ background:linear-gradient(165deg,rgba(70,35,110,.4),rgba(30,16,52,.6)); border:1px solid rgba(217,180,90,.22); border-radius:18px; padding:22px 20px 18px; text-align:center; box-shadow:0 10px 40px rgba(60,20,110,.28); }
+    .gauge-title{ font-size:.78rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); }
+    .gauge-sub{ font-size:.66rem; color:var(--muted); margin-top:3px; }
+    .gauge-wrap{ position:relative; margin:6px auto 4px; max-width:230px; }
+    .gauge-svg{ width:100%; display:block; }
+    .gauge-track{ fill:none; stroke:rgba(255,255,255,.08); stroke-width:13; stroke-linecap:round; }
+    .gauge-fill{ fill:none; stroke-width:13; stroke-linecap:round; transition:stroke-dashoffset .6s; }
+    .gauge-pct{ position:absolute; top:52%; left:0; right:0; transform:translateY(-50%); font-family:-apple-system,sans-serif; font-size:2.5rem; font-weight:800; color:#fff; }
+    .gauge-leg{ font-family:-apple-system,sans-serif; font-size:11px; font-weight:600; }
+    .gauge-stats{ display:flex; justify-content:center; gap:26px; margin-top:8px; }
+    .gauge-stat-l{ font-size:.6rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+    .gauge-stat-v{ font-family:-apple-system,sans-serif; font-size:1.15rem; font-weight:800; color:#fff; }
+    .gauge-stat-v.pc-ok{ color:var(--green); } .gauge-stat-v.pc-bad{ color:var(--red); }
 
-    /* Gauges */
-    /* auto-fit: 4 gauges lado a lado no desktop, quebrando sozinho quando aperta. */
-    .gauges{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin-bottom:16px; }
-    /* Pace: verde = o ritmo atual dá conta; vermelho = precisa acelerar. */
-    .gauge-stat-v.pc-ok{ color:#4ade80; }
-    .gauge-stat-v.pc-bad{ color:#f87171; }
-    .gauge-sub{ font-size:.72rem; color:#c9a9e0; margin-top:-6px; margin-bottom:2px; letter-spacing:.02em; }
-    .gauge-card{ background:linear-gradient(160deg, rgba(120,58,155,.4), rgba(38,20,58,.85)); border:1px solid rgba(192,123,224,.34); border-radius:20px; padding:26px 22px; display:flex; flex-direction:column; align-items:center; box-shadow:0 10px 44px rgba(139,61,171,.28); }
-    .gauge-card:hover{ border-color:rgba(206,140,235,.55); }
-    .gauge-title{ font-size:.98rem; font-weight:800; letter-spacing:.05em; text-transform:uppercase; color:#e0c4f0; margin-bottom:10px; }
-    .gauge-wrap{ position:relative; width:100%; max-width:210px; aspect-ratio:200/140; }
-    .gauge-svg{ width:100%; height:100%; overflow:visible; }
-    .gauge-track{ fill:none; stroke:#ffffff12; stroke-width:14; stroke-linecap:round; }
-    .gauge-fill{ fill:none; stroke-width:14; stroke-linecap:round; transition:stroke-dashoffset .6s ease; }
-    .gauge-pct{ position:absolute; left:0; right:0; top:52%; transform:translateY(-50%); text-align:center; font-size:2.5rem; font-weight:800; text-shadow:0 2px 12px rgba(192,123,224,.4); }
-    .gauge-leg{ font-size:12px; font-weight:700; }
-    .gauge-stats{ display:flex; gap:22px; margin-top:8px; }
-    .gauge-stat{ text-align:center; }
-    .gauge-stat-l{ font-size:.74rem; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-    .gauge-stat-v{ font-size:1.35rem; font-weight:800; margin-top:2px; }
+    .lbl{ font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin:22px 0 12px; display:flex; align-items:center; gap:10px; }
+    .lbl::after{ content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(217,180,90,.35),transparent); }
+    .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(178px,1fr)); gap:13px; }
+    .card{ background:linear-gradient(165deg,rgba(60,32,96,.38),rgba(26,14,46,.5)); border:1px solid var(--border); border-radius:14px; padding:15px 16px; display:flex; flex-direction:column; gap:3px; min-height:104px; justify-content:center; }
+    .card.hl{ border-color:rgba(217,180,90,.45); background:linear-gradient(165deg,rgba(90,55,20,.28),rgba(40,22,60,.55)); }
+    .card .k{ font-size:.68rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+    .card .prev{ font-size:.64rem; color:var(--muted); }
+    .card .v{ font-family:-apple-system,sans-serif; font-size:1.55rem; font-weight:800; color:#fff; }
+    .card .v.accent{ color:var(--gold-l); }
+    .card .tax{ font-size:.64rem; color:var(--gold); }
 
-    .lbl{ font-size:.84rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:30px 0 14px; }
-    .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(205px,1fr)); gap:14px; }
-    .card{ background:linear-gradient(165deg, rgba(96,56,132,.42), rgba(58,36,84,.55)); border:1px solid rgba(168,110,205,.24); border-radius:16px; padding:18px 20px; box-shadow:0 4px 22px rgba(0,0,0,.28); transition:transform .15s, border-color .15s; min-height:126px; display:flex; flex-direction:column; justify-content:center; }
-    .card:hover{ transform:translateY(-2px); border-color:rgba(192,123,224,.5); }
-    .card.hl{ background:linear-gradient(150deg,#8a37b4,#42186e); border-color:rgba(206,140,235,.55); box-shadow:0 10px 34px rgba(139,61,171,.5); }
-    .card .k{ font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600; }
-    .card.hl .k{ color:#e2cff0; }
-    .card .prev{ font-size:.75rem; color:var(--muted); margin-top:3px; }
-    .card .v{ font-size:1.95rem; font-weight:800; margin-top:9px; line-height:1.05; white-space:nowrap; }
-    .card .v.accent{ color:var(--purple-light); } .card .v.good{ color:var(--good); }
-    .card .tax{ font-size:.75rem; color:var(--muted); margin-top:6px; }
+    .chart-card{ background:linear-gradient(165deg,rgba(60,32,96,.34),rgba(24,13,42,.5)); border:1px solid var(--border); border-radius:16px; padding:16px 18px; }
+    .chart-box{ position:relative; height:230px; } .chart-box.tall{ height:320px; }
 
-    .charts2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-    .charts3{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-    @media(max-width:1000px){ .charts3{ grid-template-columns:1fr; } }
-    @media(max-width:900px){ .charts2{ grid-template-columns:1fr; } .gauges{ grid-template-columns:1fr; } }
-    .chart-card{ background:linear-gradient(165deg, rgba(44,27,64,.42), rgba(20,14,30,.7)); border:1px solid rgba(150,95,190,.14); border-radius:16px; padding:18px; box-shadow:0 4px 20px rgba(0,0,0,.25); }
-    .chart-title{ font-size:.8rem; font-weight:700; color:var(--text); margin-bottom:12px; }
-    .chart-box{ position:relative; }
-    .chart-box.tall{ height:300px; }
-
-    .twrap{ overflow-x:auto; border:1px solid var(--border); border-radius:13px; }
-    table{ width:100%; border-collapse:collapse; font-size:.92rem; }
-    th,td{ padding:14px 16px; text-align:right; white-space:nowrap; border-bottom:1px solid var(--border); }
-    th{ color:var(--muted); font-weight:600; font-size:.78rem; text-transform:uppercase; background:#1f1430; position:sticky; top:0; }
-    td:first-child,th:first-child{ text-align:left; max-width:320px; white-space:normal; }
-    tr:last-child td{ border-bottom:none; }
-    .vlink{ color:var(--purple-light); text-decoration:none; font-size:.74rem; }
-    .w3filter{ width:100%; max-width:340px; margin:0; padding:11px 14px; background:rgba(30,20,44,.7); border:1px solid rgba(150,95,190,.2); border-radius:10px; color:var(--text); font-family:inherit; font-size:.85rem; }
-    .fbar{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:0 0 14px; }
-    .stbtns{ display:inline-flex; gap:6px; }
-    .stbtn{ padding:9px 14px; border-radius:9px; border:1px solid rgba(150,95,190,.28); background:rgba(30,20,44,.55); color:var(--muted); font-family:inherit; font-size:.8rem; font-weight:600; cursor:pointer; white-space:nowrap; }
-    .stbtn:hover{ color:var(--text); border-color:rgba(150,95,190,.5); }
-    .stbtn.active{ background:var(--purple); border-color:var(--purple); color:#fff; }
-    .w3filter::placeholder{ color:var(--muted); }
-    th.sortable{ cursor:pointer; user-select:none; transition:color .12s; }
-    th.sortable:hover{ color:var(--purple-light); }
-    .al{ display:inline-block; font-size:.72rem; font-weight:700; padding:4px 10px; border-radius:7px; white-space:nowrap; }
-    .al-ok{ color:#8ef0b0; background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.4); }
-    .al-alto{ color:#f5cd6b; background:rgba(245,158,11,.14); border:1px solid rgba(245,158,11,.4); }
-    .al-crit{ color:#f79a9a; background:rgba(239,68,68,.16); border:1px solid rgba(239,68,68,.45); }
-    .al-sem{ color:#c9b8d6; background:rgba(120,90,150,.18); border:1px solid rgba(150,95,190,.35); }
-    .tp{ display:inline-block; font-size:.72rem; font-weight:700; padding:3px 9px; border-radius:7px; white-space:nowrap; }
-    .tp-q{ color:#f5b78a; background:rgba(245,120,60,.14); border:1px solid rgba(245,120,60,.4); }
-    .tp-f{ color:#9cc7f0; background:rgba(90,150,240,.14); border:1px solid rgba(90,150,240,.4); }
-    .tp-n{ color:var(--muted); }
-    .st{ display:inline-block; font-size:.72rem; font-weight:700; padding:3px 9px; border-radius:7px; white-space:nowrap; }
-    .st-on{ color:#8ef0b0; background:rgba(34,197,94,.16); border:1px solid rgba(34,197,94,.45); }
-    .st-off{ color:#c9b8d6; background:rgba(120,90,150,.18); border:1px solid rgba(150,95,190,.35); }
-    .st-bad{ color:#f79a9a; background:rgba(239,68,68,.16); border:1px solid rgba(239,68,68,.45); }
+    .twrap{ overflow-x:auto; border:1px solid var(--border); border-radius:14px; background:rgba(22,12,40,.5); }
+    table{ width:100%; border-collapse:collapse; font-family:-apple-system,sans-serif; font-size:.82rem; white-space:nowrap; }
+    th,td{ padding:11px 14px; text-align:right; }
+    th{ font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); background:rgba(217,180,90,.05); position:sticky; top:0; }
+    th.sortable{ cursor:pointer; user-select:none; } th.sortable:hover{ color:var(--gold-l); }
+    th:first-child,td:first-child{ text-align:left; max-width:280px; overflow:hidden; text-overflow:ellipsis; }
+    tbody tr{ border-top:1px solid rgba(255,255,255,.04); } tbody tr:hover{ background:rgba(124,58,237,.08); }
+    td .vlink{ color:var(--gold-l); text-decoration:none; } td .vlink:hover{ text-decoration:underline; }
+    .w3filter{ width:100%; max-width:340px; margin:0 0 14px; padding:10px 14px; background:rgba(30,18,48,.7); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:-apple-system,sans-serif; font-size:.85rem; }
+    .al,.st{ display:inline-block; font-family:-apple-system,sans-serif; font-size:.7rem; font-weight:700; padding:3px 9px; border-radius:7px; }
+    .al-ok{ color:var(--green); background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.4); }
+    .al-alto{ color:var(--gold-l); background:rgba(217,180,90,.14); border:1px solid rgba(217,180,90,.4); }
+    .al-crit{ color:var(--red); background:rgba(239,68,68,.16); border:1px solid rgba(239,68,68,.45); }
+    .al-sem{ color:var(--muted); background:rgba(120,90,150,.16); border:1px solid rgba(150,95,190,.3); }
+    .st-on{ color:var(--green); background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.4); }
+    .st-off{ color:var(--muted); background:rgba(120,90,150,.16); border:1px solid rgba(150,95,190,.3); }
+    .st-bad{ color:var(--red); background:rgba(239,68,68,.16); border:1px solid rgba(239,68,68,.45); }
     .st-none{ color:var(--muted); }
-    .lp-win{ color:#8ef0b0; font-weight:800; }
-    .lp-grid{ display:flex; flex-direction:column; gap:24px; }
-    .lp-geral{ background:linear-gradient(150deg,#8a37b4,#42186e); border:1px solid rgba(206,140,235,.5); border-radius:16px; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:22px; box-shadow:0 8px 30px rgba(139,61,171,.35); }
-    .lp-geral-lbl{ font-size:.92rem; font-weight:800; letter-spacing:.05em; }
+
+    .lp-geral{ background:linear-gradient(135deg,var(--purple-d),#2a1250 60%,rgba(169,132,48,.5)); border:1px solid rgba(217,180,90,.4); border-radius:18px; padding:18px 26px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:22px; box-shadow:0 10px 40px rgba(60,20,110,.35); }
+    .lp-geral-lbl{ font-size:.92rem; font-weight:800; letter-spacing:.06em; color:var(--gold-l); }
     .lp-geral-stats{ display:flex; gap:34px; flex-wrap:wrap; }
-    .lp-panel{ background:linear-gradient(165deg, rgba(60,36,86,.4), rgba(24,16,36,.7)); border:1px solid rgba(150,95,190,.2); border-radius:16px; padding:20px 22px; box-shadow:0 4px 20px rgba(0,0,0,.25); }
-    .lp-header{ display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:18px; padding-bottom:16px; border-bottom:1px solid rgba(150,95,190,.16); }
-    .lp-header-name{ font-size:1.15rem; font-weight:800; }
-    .lp-header-url{ display:block; font-size:.74rem; color:var(--purple-light); text-decoration:none; opacity:.7; margin-top:3px; }
-    .lp-header-url:hover{ opacity:1; }
-    .lp-header-right{ display:flex; gap:28px; flex-wrap:wrap; }
-    .lp-meta-lbl{ font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
-    .lp-meta-val{ font-size:1.4rem; font-weight:800; margin-top:2px; }
-    .lp-meta-val.accent{ color:var(--purple-light); }
-    .lp-body{ display:grid; grid-template-columns:1fr 1fr; gap:22px; align-items:start; }
-    @media(max-width:900px){ .lp-body{ grid-template-columns:1fr; } }
-    .fn{ display:flex; flex-direction:column; gap:5px; }
-    .fn-seg{ height:84px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-    .fn-lbl{ font-size:.66rem; font-weight:700; letter-spacing:.06em; color:rgba(255,255,255,.75); }
-    .fn-val{ font-size:1.5rem; font-weight:800; color:#fff; margin-top:3px; }
+    .lp-meta-lbl{ font-size:.62rem; text-transform:uppercase; letter-spacing:.06em; color:rgba(255,255,255,.6); }
+    .lp-meta-val{ font-family:-apple-system,sans-serif; font-size:1.35rem; font-weight:800; color:#fff; } .lp-meta-val.accent{ color:var(--gold-l); }
+    .lp-panel{ background:linear-gradient(165deg,rgba(60,32,96,.34),rgba(22,12,40,.5)); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:22px; }
+    .lp-header{ display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:16px; }
+    .lp-header-name{ font-size:1.05rem; font-weight:800; color:#fff; }
+    .lp-header-url{ font-family:-apple-system,sans-serif; font-size:.72rem; color:var(--gold); text-decoration:none; } .lp-header-url:hover{ text-decoration:underline; }
+    .lp-header-right{ display:flex; gap:26px; flex-wrap:wrap; }
+    .lp-body{ display:grid; grid-template-columns:minmax(230px,1fr) 2fr; gap:22px; }
+    .fn{ display:flex; flex-direction:column; gap:3px; }
+    .fn-seg{ position:relative; height:52px; display:flex; flex-direction:column; align-items:center; justify-content:center; margin:0 auto; width:100%; }
+    .fn-lbl{ font-family:-apple-system,sans-serif; font-size:.6rem; font-weight:700; letter-spacing:.04em; color:rgba(30,15,5,.82); }
+    .fn-val{ font-family:-apple-system,sans-serif; font-size:1.05rem; font-weight:800; color:#1e0f05; }
     .fn-rate{ text-align:center; margin:1px 0; }
-    .fn-pill{ display:inline-block; font-size:.7rem; font-weight:700; color:#e0c4f0; background:rgba(24,16,36,.75); border:1px solid rgba(192,123,224,.4); padding:4px 13px; border-radius:20px; }
-    .lp-charts-col{ display:flex; flex-direction:column; gap:14px; }
-    .lp-chart-card{ background:rgba(30,20,44,.5); border:1px solid rgba(150,95,190,.16); border-radius:12px; padding:14px 16px; }
-    .lp-chart-title{ font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:10px; }
-    .lp-chart-h{ height:118px; }
+    .fn-pill{ font-family:-apple-system,sans-serif; font-size:.6rem; font-weight:700; color:var(--purple-l); background:rgba(124,58,237,.18); border:1px solid rgba(124,58,237,.4); padding:2px 9px; border-radius:20px; }
+    .lp-charts-col{ display:grid; grid-template-columns:1fr 1fr; gap:12px; align-content:start; }
+    .lp-chart-card{ background:rgba(30,18,48,.5); border:1px solid var(--border); border-radius:12px; padding:13px 15px; }
+    .lp-chart-title{ font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:9px; }
+    .lp-chart-h{ height:112px; }
+    @media(max-width:820px){ .lp-body{ grid-template-columns:1fr; } }
     .empty,.loading{ text-align:center; color:var(--muted); padding:34px; }
     .err{ color:var(--red); }
-    .foot{ margin-top:26px; font-size:.7rem; color:var(--muted); text-align:center; }
+    .foot{ margin-top:26px; font-size:.68rem; color:var(--muted); text-align:center; }
   </style>
 </head>
 <body>
   <div class="page">
     <div class="top">
-      <div style="font-size:1.35rem;font-weight:800;letter-spacing:.01em;color:#f3eefa">CTI <span style="color:#c07be0">· Congresso Trabalho Internacional</span></div>
+      <div class="brand">
+        <span class="kicker">Hire International · Malu</span>
+        <h1>Congresso <b>Trabalho Internacional</b></h1>
+        <span class="sub">28 e 29 de novembro · São Paulo · Dashboard de tráfego</span>
+      </div>
       <div class="top-r">
         <span class="live">AO VIVO</span>
         <div class="presets" id="presets">
           <button class="preset" data-d="0" onclick="setPreset(this)">Hoje</button>
-          <button class="preset" data-d="3" onclick="setPreset(this)">3 dias</button>
           <button class="preset" data-d="7" onclick="setPreset(this)">7 dias</button>
           <button class="preset" data-d="14" onclick="setPreset(this)">14 dias</button>
           <button class="preset active" data-d="all" onclick="setPreset(this)">Tudo</button>
@@ -173,39 +149,38 @@
 
     <div class="tabs">
       <button class="tab active" data-p="geral" onclick="setTab(this)">Geral</button>
-      <button class="tab" data-p="malu" onclick="setTab(this)">Malu</button>
-      <button class="tab" data-p="hire" onclick="setTab(this)">Hire</button>
       <button class="tab" data-p="campanhas" onclick="setTab(this)">Campanhas</button>
       <button class="tab" data-p="publicos" onclick="setTab(this)">Públicos</button>
       <button class="tab" data-p="criativos" onclick="setTab(this)">Criativos</button>
-      <button class="tab" data-p="lp" onclick="setTab(this)">LP</button>
+      <button class="tab" data-p="lp" onclick="setTab(this)">Funil / LP</button>
     </div>
 
     <div id="body"><div class="loading">Carregando dados da planilha…</div></div>
-    <div class="foot" id="foot">Atualiza automaticamente a cada abertura · Congresso Trabalho Internacional (Hire / Malu)</div>
+    <div class="foot" id="foot">Atualiza automaticamente a cada abertura · Congresso Trabalho Internacional</div>
   </div>
 
   <script>
     // ── Config ───────────────────────────────────────────────────────────────
     const SHEET_CTI = '1Vp8wqrE7S7S4imDEmTanB4GL7Af7OEP_muqBLsbbz7o';
-    const FLOOR = new Date(2026, 0, 1);           // piso do filtro
-    const LP_MALU = 'https://hire-international.com/pt/congresso-trabalho-internacional-malu-ads/';
-    const LP_HIRE = 'https://hire-international.com/pt/congresso-trabalho-internacional-hire-ads/';
-    // Metas (aba Metas). ctr/connect/conversao guardados em % (0,60 · 70 · 2).
+    const TAB_MALU  = '639532557';                // aba MALU (fonte única)
+    const START = new Date(2026, 6, 21);          // 21/07/2026 — início do CTI
+    const FLOOR = new Date(2026, 0, 1);
+    const EVENT = new Date(2026, 10, 28);         // 28/11/2026 — evento (pace)
+    const LP_URL = 'https://hire-international.com/pt/congresso-trabalho-internacional-malu-ads/';
     const METAS_DEFAULT = { investimento:30000, cpm:40, ctr:0.60, connect_rate:70, conversao:2, cpa:150, ingressos:200 };
 
-    let DATA = { malu:[], hire:[], metas:{...METAS_DEFAULT} };
-    let profile='geral', view='geral', presetDays='all';
+    let DATA = { rows:[], metas:{...METAS_DEFAULT} };
+    let view='geral', presetDays='all';
 
     const BRL = v => (v==null||isNaN(v)) ? '—' : 'R$ ' + Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
     const BRLk= v => (v==null||isNaN(v)) ? '—' : 'R$ ' + Number(v).toLocaleString('pt-BR',{maximumFractionDigits:0});
     const NUM = v => (v==null||isNaN(v)) ? '—' : Number(v).toLocaleString('pt-BR',{maximumFractionDigits:0});
     const PCT = v => (v==null||isNaN(v)) ? '—' : Number(v).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1}) + '%';
+    const RS  = v => (v==null||isNaN(v)) ? '—' : Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}) + 'x';
     const div = (a,b) => b ? a/b : 0;
     const dkey = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
     function parseBR(s){ if(s==null) return 0; if(typeof s==='number') return s; s=String(s).replace(/R\$/g,'').replace(/%/g,'').replace(/ /g,'').trim(); if(!s) return 0; s=s.replace(/\./g,'').replace(',','.'); const n=parseFloat(s); return isNaN(n)?0:n; }
 
-    // ── gviz JSONP ────────────────────────────────────────────────────────────
     let _seq=0;
     function gviz(sheetId, query){
       return new Promise((resolve,reject)=>{
@@ -221,27 +196,24 @@
     }
     const cNum = c => !c ? 0 : (typeof c.v==='number' ? c.v : parseBR(c.f!=null?c.f:c.v));
     const cStr = c => !c ? '' : (c.f!=null?c.f:(c.v!=null?String(c.v):''));
-    const cDate= c => {
-      if(!c) return null;
+    const cDate= c => { if(!c) return null;
       const f=String(c.f||c.v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
       if(f){ let y=+f[3]; if(y<100)y+=2000; return new Date(y,+f[2]-1,+f[1]); }
       const d=String(c.v||'').match(/Date\((\d+),(\d+),(\d+)/); if(d) return new Date(+d[1],+d[2],+d[3]);
-      return null;
-    };
+      return null; };
 
-    // Colunas: Date(0) Campanha(1) Publico(2) Criativo(3) URL(4) Investido(5) Impressoes(6) Cliques(7) Leads(8) Visualizacoes_LP(9)
+    // Colunas: Data(0) Campanha(1) Publico(2) Criativo(3) Investimento(4) Impressoes(5)
+    // Cliques(6) Visitas(7) AddCarrinho(8) ValorCarrinho(9) Checkout(10) Vendas(11) Faturamento(12) Link(13) Status(14)
     function metaRows(table){
       const out=[];
       for(const r of (table.rows||[])){
         const c=r.c||[]; const d=cDate(c[0]); if(!d) continue;
-        out.push({ date:d, campanha:cStr(c[1]), adset:cStr(c[2]), anuncio:cStr(c[3]), link:cStr(c[4]),
-          cost:cNum(c[5]), impressions:cNum(c[6]), clicks:cNum(c[7]), leads:cNum(c[8]), pageview:cNum(c[9]) });
+        out.push({ date:d, campanha:cStr(c[1]), adset:cStr(c[2]), anuncio:cStr(c[3]),
+          cost:cNum(c[4]), impressions:cNum(c[5]), clicks:cNum(c[6]), visits:cNum(c[7]), addcart:cNum(c[8]),
+          checkout:cNum(c[10]), vendas:cNum(c[11]), faturamento:cNum(c[12]), link:cStr(c[13]), status:cStr(c[14]) });
       }
       return out;
     }
-    // Aba Metas: rótulo na col 0, valor na col 1. CTR/Connect/Conversão vêm como
-    // fração (0,006 · 0,7 · 0,02) → guardo em %. "Ingressos totais" aparece 2x
-    // (0 e 200) — só o >0 conta.
     function readMetas(table){
       const m={...METAS_DEFAULT};
       for(const r of (table.rows||[])){
@@ -258,256 +230,225 @@
       return m;
     }
 
-    // ── Filtro de data ─────────────────────────────────────────────────────────
+    // Status → selo. ACTIVE=ativo · *PAUSED=pausado · DISAPPROVED=reprovado.
+    function stInfo(raw){ const s=String(raw||'').toUpperCase();
+      if(s==='ACTIVE') return {t:'Ativo',c:'st-on',r:0};
+      if(s==='DISAPPROVED') return {t:'Reprovado',c:'st-bad',r:2};
+      if(s.indexOf('PAUSED')>=0) return {t:'Pausado',c:'st-off',r:1};
+      return {t:'—',c:'st-none',r:3}; }
+    const stBadge = raw => { const s=stInfo(raw); return `<span class="st ${s.c}">${s.t}</span>`; };
+    function accStatus(o,r){ if(!r.status) return; const rk=stInfo(r.status).r;
+      if(!o._sd||r.date>o._sd){ o._sd=r.date; o.status=r.status; o._rk=rk; }
+      else if(o._sd&&+r.date===+o._sd&&rk<o._rk){ o.status=r.status; o._rk=rk; } }
+
+    // ── Filtro de data ────────────────────────────────────────────────────────
     let fStart=null, fEnd=null;
-    function cutoff(){
-      if(presetDays==='all') return FLOOR;
-      const t=new Date(); t.setHours(0,0,0,0);
-      const c=new Date(t); c.setDate(c.getDate()-Number(presetDays));
-      return c<FLOOR?FLOOR:c;
-    }
+    function cutoff(){ if(presetDays==='all') return FLOOR; const t=new Date(); t.setHours(0,0,0,0); const c=new Date(t); c.setDate(c.getDate()-Number(presetDays)); return c<FLOOR?FLOOR:c; }
     const inRange = d => { if(fStart&&d<fStart)return false; if(fEnd&&d>fEnd)return false; return d>=cutoff(); };
 
-    // ── Agregação ───────────────────────────────────────────────────────────────
-    function metaAgg(rows){
-      let cost=0,imp=0,clk=0,lead=0,pv=0;
-      for(const r of rows){ cost+=r.cost;imp+=r.impressions;clk+=r.clicks;lead+=r.leads;pv+=r.pageview; }
-      return { investido:cost, impressoes:imp, cliques:clk, leads:lead, pageviews:pv,
-        cpl:div(cost,lead), cpm:div(cost,imp)*1000, ctr:div(clk,imp)*100, connect_rate:div(pv,clk)*100, cpv:div(cost,pv) };
+    // ── Agregação ─────────────────────────────────────────────────────────────
+    function agg(rows){
+      let cost=0,imp=0,clk=0,vis=0,cart=0,chk=0,vend=0,fat=0;
+      for(const r of rows){ cost+=r.cost;imp+=r.impressions;clk+=r.clicks;vis+=r.visits;cart+=r.addcart;chk+=r.checkout;vend+=r.vendas;fat+=r.faturamento; }
+      return { investido:cost, impressoes:imp, cliques:clk, visitas:vis, addcart:cart, checkout:chk, vendas:vend, faturamento:fat,
+        ctr:div(clk,imp)*100, cpm:div(cost,imp)*1000, connect:div(vis,clk)*100, cpv:div(cost,vis), cpa:div(cost,vend),
+        roas:div(fat,cost), ticket:div(fat,vend), txconv:div(vend,vis)*100 };
     }
 
-    // ── Gauges / cards ───────────────────────────────────────────────────────────
+    // ── Gauge / card ──────────────────────────────────────────────────────────
     const ARC=298.5;
-    function gauge(id, title, atual, meta, fmt, mediaDia, metaDia, sub){
+    function gauge(id, title, atual, meta, fmt, stats, sub){
       const pct = meta? Math.min(100,Math.max(0,atual/meta*100)) : 0;
-      const stats = (mediaDia||metaDia) ? `<div class="gauge-stats">
-          ${mediaDia?`<div class="gauge-stat"><div class="gauge-stat-l">Média/dia</div><div class="gauge-stat-v">${mediaDia}</div></div>`:''}
-          ${metaDia?`<div class="gauge-stat"><div class="gauge-stat-l">Meta/dia</div><div class="gauge-stat-v">${metaDia}</div></div>`:''}
-        </div>` : '';
-      return `<div class="gauge-card"><div class="gauge-title">${title}</div>
-        ${sub?`<div class="gauge-sub">${sub}</div>`:''}
+      const st = stats ? `<div class="gauge-stats">${stats.map(s=>`<div><div class="gauge-stat-l">${s[0]}</div><div class="gauge-stat-v ${s[2]||''}">${s[1]}</div></div>`).join('')}</div>` : '';
+      return `<div class="gauge-card"><div class="gauge-title">${title}</div>${sub?`<div class="gauge-sub">${sub}</div>`:''}
         <div class="gauge-wrap"><svg class="gauge-svg" viewBox="0 0 200 140">
           <path class="gauge-track" d="M5,110 A95,95,0,0,1,195,110"/>
           <path class="gauge-fill" d="M5,110 A95,95,0,0,1,195,110" stroke="url(#pg)" stroke-dasharray="${ARC} ${ARC}" stroke-dashoffset="${ARC*(1-pct/100)}"/>
-          <defs><linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#5a1e68"/><stop offset="100%" stop-color="#a855c8"/></linearGradient></defs>
+          <defs><linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#d9b45a"/></linearGradient></defs>
           <text x="5" y="132" class="gauge-leg" text-anchor="middle" fill="rgba(255,255,255,.7)">${fmt(atual)}</text>
           <text x="195" y="132" class="gauge-leg" text-anchor="middle" fill="rgba(255,255,255,.35)">${meta?fmt(meta):'—'}</text>
-        </svg><div class="gauge-pct">${pct.toLocaleString('pt-BR',{maximumFractionDigits:1})}%</div></div>${stats}</div>`;
+        </svg><div class="gauge-pct">${pct.toLocaleString('pt-BR',{maximumFractionDigits:1})}%</div></div>${st}</div>`;
     }
     function card(k,v,cls,prev,tax){ return `<div class="card ${cls&&cls.includes('hl')?'hl':''}"><div class="k">${k}</div>${prev?`<div class="prev">${prev}</div>`:''}<div class="v ${cls||''}">${v}</div>${tax?`<div class="tax">${tax}</div>`:''}</div>`; }
-
     let charts=[];
     function killCharts(){ charts.forEach(c=>{try{c.destroy();}catch(e){}}); charts=[]; }
 
-    // ── Geral / Malu / Hire ──────────────────────────────────────────────────────
+    // ── Geral ─────────────────────────────────────────────────────────────────
     function render(){
       killCharts();
-      const mrows=(profile==='malu'?DATA.malu:profile==='hire'?DATA.hire:DATA.malu.concat(DATA.hire)).filter(r=>inRange(r.date));
-      const k=metaAgg(mrows), m=DATA.metas;
-      const daysD=new Set(mrows.map(r=>dkey(r.date))).size||1;
-      const metaLeads=m.conversao?Math.round(m.ingressos/(m.conversao/100)):0;   // 200 ÷ 2% = 10.000
-      const ingProj=k.leads*(m.conversao/100);
-      const metaCPL=m.cpa*(m.conversao/100);                                     // R$150 × 2% = R$3,00
+      const rows=DATA.rows.filter(r=>inRange(r.date));
+      const k=agg(rows), m=DATA.metas;
+      const daysD=new Set(rows.map(r=>dkey(r.date))).size||1;
+      const today=new Date(); today.setHours(0,0,0,0);
+      const diasRest=Math.max(1, Math.round((EVENT-today)/864e5));
+      const faltaIng=Math.max(0, m.ingressos-k.vendas);
+      const needIng=Math.ceil(faltaIng/diasRest);
+      const ritmoIng=Math.round(k.vendas/daysD);
+      const paceCls=ritmoIng>=needIng?'pc-ok':'pc-bad';
 
       let h='';
       h+=`<div class="gauges">`;
-      h+=gauge('g1','Investimento', k.investido, m.investimento, BRLk, BRLk(k.investido/daysD), '', 'Verba prevista '+BRLk(m.investimento));
-      h+=gauge('g2','Leads', k.leads, metaLeads, NUM, NUM(Math.round(k.leads/daysD)), '', 'Meta '+NUM(metaLeads)+' (p/ '+NUM(m.ingressos)+' ingressos)');
-      h+=gauge('g3','Ingressos projetados', ingProj, m.ingressos, NUM, '', '', 'Leads × '+PCT(m.conversao)+' de conversão');
+      h+=gauge('g1','Investimento', k.investido, m.investimento, BRLk,
+        [['Média/dia', BRLk(k.investido/daysD)], ['Verba', BRLk(m.investimento)]], 'Verba prevista '+BRLk(m.investimento));
+      h+=gauge('g2','Ingressos Vendidos', k.vendas, m.ingressos, NUM,
+        [['Feito/dia', NUM(ritmoIng)], ['Precisa/dia', faltaIng>0?NUM(needIng):'✓', paceCls]], faltaIng>0?('Faltam '+NUM(faltaIng)+' · '+diasRest+' dias p/ 28/11'):'Meta batida');
+      h+=gauge('g3','Taxa de Conversão', k.txconv, m.conversao, v=>PCT(v), null, 'Vendas ÷ Visitas · meta '+PCT(m.conversao));
       h+=`</div>`;
 
-      h+=`<div class="lbl">Tráfego · Ads (Meta Ads)</div><div class="grid">`;
-      h+=card('Investimento', BRL(k.investido), 'hl v', 'Previsto: '+BRLk(m.investimento), 'Taxa investida '+PCT(div(k.investido,m.investimento)*100))
-        +card('Leads', NUM(k.leads), 'accent')
-        +card('CPL', BRL(k.cpl), '', '', 'Alvo '+BRL(metaCPL))
-        +card('CPM', BRL(k.cpm), '', '', 'Meta '+BRL(m.cpm))
-        +card('CTR', PCT(k.ctr), '', '', 'Meta '+PCT(m.ctr))
-        +card('Connect Rate', PCT(k.connect_rate), '', '', 'Meta '+PCT(m.connect_rate));
-      h+=`</div>`;
-
-      h+=`<div class="lbl">Alcance & Página</div><div class="grid">`;
-      h+=card('Impressões', NUM(k.impressoes))
+      h+=`<div class="lbl">Investimento & Alcance</div><div class="grid">`;
+      h+=card('Investimento', BRL(k.investido), 'hl v', 'Verba: '+BRLk(m.investimento), 'Taxa investida '+PCT(div(k.investido,m.investimento)*100))
+        +card('Impressões', NUM(k.impressoes))
         +card('Cliques', NUM(k.cliques))
-        +card('Page View (LP)', NUM(k.pageviews))
-        +card('Custo / LP View', BRL(k.cpv));
+        +card('CTR', PCT(k.ctr), '', '', 'Meta '+PCT(m.ctr))
+        +card('CPM', BRL(k.cpm), '', '', 'Meta '+BRL(m.cpm));
       h+=`</div>`;
 
-      h+=`<div class="lbl">Investido & Leads por Dia</div><div class="chart-card"><div class="chart-box tall"><canvas id="cDia"></canvas></div></div>`;
+      h+=`<div class="lbl">Funil do Site</div><div class="grid">`;
+      h+=card('Visitas no Site', NUM(k.visitas), 'accent')
+        +card('Connect Rate', PCT(k.connect), '', '', 'Meta '+PCT(m.connect_rate))
+        +card('Adições ao Carrinho', NUM(k.addcart))
+        +card('Checkout', NUM(k.checkout))
+        +card('Custo / Visita', BRL(k.cpv));
+      h+=`</div>`;
+
+      h+=`<div class="lbl">Resultado</div><div class="grid">`;
+      h+=card('Ingressos (Vendas)', NUM(k.vendas), 'accent')
+        +card('Faturamento', BRL(k.faturamento), 'hl v')
+        +card('CPA', k.vendas?BRL(k.cpa):'—', '', '', 'Meta '+BRL(m.cpa))
+        +card('ROAS', k.vendas?RS(k.roas):'—')
+        +card('Ticket Médio', k.vendas?BRL(k.ticket):'—');
+      h+=`</div>`;
+
+      h+=`<div class="lbl">Investido & Vendas por Dia</div><div class="chart-card"><div class="chart-box tall"><canvas id="cDia"></canvas></div></div>`;
       document.getElementById('body').innerHTML=h;
       document.getElementById('updated').textContent='Atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
 
-      const invByDay={}, leadByDay={};
-      for(const r of mrows){ const kd=dkey(r.date); invByDay[kd]=(invByDay[kd]||0)+r.cost; leadByDay[kd]=(leadByDay[kd]||0)+r.leads; }
-      const dts=[...new Set([...Object.keys(invByDay),...Object.keys(leadByDay)])].sort();
+      const invD={}, vendD={};
+      for(const r of rows){ const kd=dkey(r.date); invD[kd]=(invD[kd]||0)+r.cost; vendD[kd]=(vendD[kd]||0)+r.vendas; }
+      const dts=[...new Set([...Object.keys(invD),...Object.keys(vendD)])].sort();
       const lbls=dts.map(k=>{const p=k.split('-');return p[2]+'/'+p[1];});
       charts.push(new Chart(document.getElementById('cDia'),{ data:{labels:lbls, datasets:[
-        {type:'bar', label:'Leads', data:dts.map(k=>leadByDay[k]||0), backgroundColor:'#b565d6cc', borderColor:'#b565d6', borderRadius:4, yAxisID:'y'},
-        {type:'line', label:'Investido/dia', data:dts.map(k=>+(invByDay[k]||0).toFixed(2)), borderColor:'#e6ccf5', backgroundColor:'rgba(230,204,245,.12)', borderWidth:2, pointRadius:3, pointBackgroundColor:'#e6ccf5', tension:.35, yAxisID:'y1'} ]},
+        {type:'bar', label:'Vendas', data:dts.map(k=>vendD[k]||0), backgroundColor:'#d9b45acc', borderColor:'#f2d98a', borderRadius:4, yAxisID:'y'},
+        {type:'line', label:'Investido/dia', data:dts.map(k=>+(invD[k]||0).toFixed(2)), borderColor:'#a855f7', backgroundColor:'rgba(168,85,247,.12)', borderWidth:2, pointRadius:3, pointBackgroundColor:'#a855f7', tension:.35, yAxisID:'y1'} ]},
         options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
           plugins:{ legend:{labels:{color:'#cbb8dd',boxWidth:14,font:{size:12}}}, tooltip:{callbacks:{label:c=>c.dataset.label.indexOf('Investido')>=0?' Investido: '+BRL(c.parsed.y):' '+c.dataset.label+': '+c.parsed.y}} },
           scales:{ x:{grid:{color:'#ffffff08'},ticks:{color:'#9a8bb0',font:{size:11}}}, y:{grid:{color:'#ffffff08'},ticks:{color:'#9a8bb0'},beginAtZero:true},
-            y1:{position:'right',grid:{drawOnChartArea:false},ticks:{color:'#e6ccf5',callback:v=>'R$'+Math.round(v)},beginAtZero:true} } } }));
-    }
-
-    function hbar(id, items){
-      const el=document.getElementById(id); if(!el) return;
-      const valPlugin={ id:'v'+id, afterDatasetsDraw(ch){ const c=ch.ctx; c.save(); ch.getDatasetMeta(0).data.forEach((bar,i)=>{ const v=ch.data.datasets[0].data[i]; c.fillStyle='rgba(255,255,255,.85)'; c.font='600 12px system-ui'; c.textAlign='left'; c.textBaseline='middle'; c.fillText(v, bar.x+6, bar.y); }); c.restore(); } };
-      charts.push(new Chart(el,{ type:'bar', data:{ labels:items.map(i=>i.label.length>26?i.label.slice(0,25)+'…':i.label), datasets:[{ data:items.map(i=>i.count), backgroundColor:'#b565d6cc', borderRadius:5, barThickness:20 }] },
-        options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{display:false,beginAtZero:true}, y:{grid:{display:false},ticks:{color:'#ccc',font:{size:12}}} }, layout:{padding:{right:34}} }, plugins:[valPlugin] }));
+            y1:{position:'right',grid:{drawOnChartArea:false},ticks:{color:'#d9b45a',callback:v=>'R$'+Math.round(v)},beginAtZero:true} } } }));
     }
 
     // ── Router ────────────────────────────────────────────────────────────────
-    function route(){
-      if(view==='campanhas') return renderTabela('campanhas');
-      if(view==='publicos') return renderTabela('publicos');
-      if(view==='criativos') return renderTabela('criativos');
-      if(view==='lp') return renderLP();
-      profile=view; render();
-    }
+    function route(){ if(view==='campanhas')return renderTabela('campanhas'); if(view==='publicos')return renderTabela('publicos'); if(view==='criativos')return renderTabela('criativos'); if(view==='lp')return renderLP(); render(); }
     function setTab(el){ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); view=el.dataset.p; route(); }
-    function setPreset(el){
-      document.querySelectorAll('.preset').forEach(t=>t.classList.remove('active'));
-      el.classList.add('active'); presetDays=el.dataset.d; fStart=fEnd=null;
-      document.getElementById('dDe').value=''; document.getElementById('dAte').value=''; document.getElementById('dClear').style.display='none';
-      route();
-    }
+    function setPreset(el){ document.querySelectorAll('.preset').forEach(t=>t.classList.remove('active')); el.classList.add('active'); presetDays=el.dataset.d; fStart=fEnd=null; document.getElementById('dDe').value=''; document.getElementById('dAte').value=''; document.getElementById('dClear').style.display='none'; route(); }
     const _pDate = v => { if(!v) return null; const p=v.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); };
-    function setDates(){
-      fStart=_pDate(document.getElementById('dDe').value); fEnd=_pDate(document.getElementById('dAte').value);
+    function setDates(){ fStart=_pDate(document.getElementById('dDe').value); fEnd=_pDate(document.getElementById('dAte').value);
       if(fStart&&fEnd&&fStart>fEnd){ const t=fStart; fStart=fEnd; fEnd=t; document.getElementById('dDe').value=dkey(fStart); document.getElementById('dAte').value=dkey(fEnd); }
       if(fStart||fEnd){ presetDays='all'; document.querySelectorAll('.preset').forEach(t=>t.classList.remove('active')); document.getElementById('dClear').style.display=''; }
-      else { document.querySelector('.preset[data-d="all"]').classList.add('active'); document.getElementById('dClear').style.display='none'; }
-      route();
-    }
-    function clearDates(){
-      fStart=fEnd=null; presetDays='all'; document.getElementById('dDe').value=''; document.getElementById('dAte').value=''; document.getElementById('dClear').style.display='none';
-      document.querySelectorAll('.preset').forEach(t=>t.classList.remove('active')); document.querySelector('.preset[data-d="all"]').classList.add('active');
-      route();
-    }
+      else { document.querySelector('.preset[data-d="all"]').classList.add('active'); document.getElementById('dClear').style.display='none'; } route(); }
+    function clearDates(){ fStart=fEnd=null; presetDays='all'; document.getElementById('dDe').value=''; document.getElementById('dAte').value=''; document.getElementById('dClear').style.display='none'; document.querySelectorAll('.preset').forEach(t=>t.classList.remove('active')); document.querySelector('.preset[data-d="all"]').classList.add('active'); route(); }
 
     // ── Ordenação ───────────────────────────────────────────────────────────────
     let _sortState={};
     function doSort(tab,key){ const st=_sortState[tab]||(_sortState[tab]={key:key,dir:-1}); if(st.key===key) st.dir=-st.dir; else { st.key=key; st.dir=-1; } route(); }
-    function sortRows(tab, rows, defKey){
-      const st=_sortState[tab]||(_sortState[tab]={key:defKey,dir:-1});
-      return rows.slice().sort((a,b)=>{ let va=a[st.key], vb=b[st.key];
-        if(va==null||va==='')va=-Infinity; if(vb==null||vb==='')vb=-Infinity;
-        if(typeof va==='number'&&typeof vb==='number') return (va-vb)*st.dir;
-        return String(va).localeCompare(String(vb),'pt')*st.dir; });
-    }
+    function sortRows(tab, rows, defKey){ const st=_sortState[tab]||(_sortState[tab]={key:defKey,dir:-1});
+      return rows.slice().sort((a,b)=>{ let va=a[st.key], vb=b[st.key]; if(va==null||va==='')va=-Infinity; if(vb==null||vb==='')vb=-Infinity;
+        if(typeof va==='number'&&typeof vb==='number') return (va-vb)*st.dir; return String(va).localeCompare(String(vb),'pt')*st.dir; }); }
     function sortTh(tab,key,label,left){ const st=_sortState[tab]||{}; const ar=st.key===key?(st.dir<0?' ↓':' ↑'):''; return `<th class="sortable" onclick="doSort('${tab}','${key}')"${left?' style="text-align:left"':''}>${label}${ar}</th>`; }
 
-    // ── Tabelas (campanhas / públicos / criativos) ───────────────────────────────
-    // Agrupa por chave e devolve linhas com métricas de tráfego + alerta de CPL.
+    // ── Tabelas ───────────────────────────────────────────────────────────────
     function agrupa(rows, keyFn, withLink){
-      const by={};
+      const by={}, metaCPA=DATA.metas.cpa;
       for(const r of rows){ const key=keyFn(r)||'—'; let o=by[key];
-        if(!o) o=by[key]={nome:key,link:'',cost:0,imp:0,clk:0,pv:0,leads:0};
-        o.cost+=r.cost;o.imp+=r.impressions;o.clk+=r.clicks;o.pv+=r.pageview;o.leads+=r.leads;
-        if(withLink&&r.link&&!o.link)o.link=r.link;
+        if(!o) o=by[key]={nome:key,link:'',status:'',_sd:null,_rk:9,cost:0,imp:0,clk:0,vis:0,chk:0,vend:0,fat:0};
+        o.cost+=r.cost;o.imp+=r.impressions;o.clk+=r.clicks;o.vis+=r.visits;o.chk+=r.checkout;o.vend+=r.vendas;o.fat+=r.faturamento;
+        if(withLink&&r.link&&!o.link)o.link=r.link; accStatus(o,r);
       }
-      const metaCPL=DATA.metas.cpa*(DATA.metas.conversao/100);
-      return Object.values(by).map(o=>{ const cpl=div(o.cost,o.leads);
-        let al='ok'; if(!o.leads) al='sem'; else if(cpl>metaCPL*1.5) al='critico'; else if(cpl>metaCPL) al='alto';
-        return { nome:o.nome, link:o.link, investido:o.cost, imp:o.imp, ctr:div(o.clk,o.imp)*100,
-          cliques:o.clk, pv:o.pv, cr:div(o.pv,o.clk)*100, leads:o.leads, cpl, al };
+      return Object.values(by).map(o=>{ const cpa=div(o.cost,o.vend);
+        let al='ok'; if(!o.vend) al='sem'; else if(cpa>metaCPA*1.5) al='critico'; else if(cpa>metaCPA) al='alto';
+        return { nome:o.nome, link:o.link, status:o.status, investido:o.cost, imp:o.imp, ctr:div(o.clk,o.imp)*100,
+          cliques:o.clk, visitas:o.vis, cr:div(o.vis,o.clk)*100, checkout:o.chk, vendas:o.vend, cpa, roas:div(o.fat,o.cost), faturamento:o.fat, al };
       }).sort((a,b)=>b.investido-a.investido);
     }
     const TAB_CFG = {
-      campanhas: { key:r=>r.campanha, label:'Campanha', title:'Performance por Campanha', link:false, row:'crow' },
-      publicos:  { key:r=>r.adset,    label:'Público',  title:'Performance por Público (Ad Set)', link:false, row:'purow' },
-      criativos: { key:r=>r.anuncio,  label:'Anúncio',  title:'Performance por Criativo', link:true, row:'crrow' },
+      campanhas:{ key:r=>r.campanha, label:'Campanha', title:'Performance por Campanha', link:false, row:'crow' },
+      publicos: { key:r=>r.adset,    label:'Público',  title:'Performance por Público (Ad Set)', link:false, row:'purow' },
+      criativos:{ key:r=>r.anuncio,  label:'Anúncio',  title:'Performance por Criativo', link:true, row:'crrow' },
     };
     let _fq={campanhas:'',publicos:'',criativos:''};
     function renderTabela(tab){
       killCharts();
       const cfg=TAB_CFG[tab];
-      const rows=DATA.malu.concat(DATA.hire).filter(r=>inRange(r.date));
-      const list=sortRows(tab, agrupa(rows, cfg.key, cfg.link), 'investido');
-      const AL={ok:['OK','al-ok'],alto:['CPL Alto','al-alto'],critico:['CPL Crítico','al-crit'],sem:['Sem Lead','al-sem']};
-      const metaCPL=DATA.metas.cpa*(DATA.metas.conversao/100);
-      let h=`<div class="lbl">${cfg.title} (${list.length}) · alvo CPL ${BRL(metaCPL)}</div>
-        <input class="w3filter" id="fq_${tab}" placeholder="Filtrar por nome…" value="${(_fq[tab]||'').replace(/"/g,'&quot;')}" oninput="_fq['${tab}']=this.value.toLowerCase();document.querySelectorAll('.${cfg.row}').forEach(function(tr){tr.style.display=tr.dataset.n.indexOf(_fq['${tab}'])>=0?'':'none';});">
+      const list=sortRows(tab, agrupa(DATA.rows.filter(r=>inRange(r.date)), cfg.key, cfg.link), 'investido');
+      const AL={ok:['OK','al-ok'],alto:['CPA Alto','al-alto'],critico:['CPA Crítico','al-crit'],sem:['Sem Venda','al-sem']};
+      let h=`<div class="lbl">${cfg.title} (${list.length}) · meta CPA ${BRL(DATA.metas.cpa)}</div>
+        <input class="w3filter" value="${(_fq[tab]||'').replace(/"/g,'&quot;')}" placeholder="Filtrar por nome…" oninput="_fq['${tab}']=this.value.toLowerCase();document.querySelectorAll('.${cfg.row}').forEach(function(tr){tr.style.display=tr.dataset.n.indexOf(_fq['${tab}'])>=0?'':'none';});">
         <div class="twrap"><table><thead><tr>
-        ${sortTh(tab,'nome',cfg.label,1)}${sortTh(tab,'investido','Investido')}${sortTh(tab,'imp','Impr.')}${sortTh(tab,'ctr','CTR')}${sortTh(tab,'cliques','Cliques')}${sortTh(tab,'pv','PV')}${sortTh(tab,'cr','Connect')}${sortTh(tab,'leads','Leads')}${sortTh(tab,'cpl','CPL')}<th>Alerta</th>${cfg.link?'<th>Link</th>':''}
+        ${sortTh(tab,'nome',cfg.label,1)}${sortTh(tab,'status','Status')}${sortTh(tab,'investido','Investido')}${sortTh(tab,'imp','Impr.')}${sortTh(tab,'ctr','CTR')}${sortTh(tab,'cliques','Cliques')}${sortTh(tab,'visitas','Visitas')}${sortTh(tab,'cr','Connect')}${sortTh(tab,'checkout','Checkout')}${sortTh(tab,'vendas','Vendas')}${sortTh(tab,'cpa','CPA')}${sortTh(tab,'roas','ROAS')}<th>Alerta</th>${cfg.link?'<th>Link</th>':''}
       </tr></thead><tbody>`;
-      const cols=cfg.link?11:10;
+      const cols=cfg.link?14:13;
       if(!list.length) h+=`<tr><td colspan="${cols}" class="empty">Sem dados no período</td></tr>`;
       else for(const o of list){ const b=AL[o.al];
-        h+=`<tr class="${cfg.row}" data-n="${(o.nome||'').toLowerCase()}"><td title="${o.nome}">${o.nome}</td><td>${BRL(o.investido)}</td><td>${NUM(o.imp)}</td><td>${PCT(o.ctr)}</td><td>${NUM(o.cliques)}</td><td>${NUM(o.pv)}</td><td>${PCT(o.cr)}</td><td>${NUM(o.leads)}</td><td>${BRL(o.cpl)}</td><td><span class="al ${b[1]}">${b[0]}</span></td>${cfg.link?`<td>${o.link?`<a class="vlink" href="${o.link}" target="_blank">🔗 ver</a>`:'—'}</td>`:''}</tr>`;
+        h+=`<tr class="${cfg.row}" data-n="${(o.nome||'').toLowerCase()}"><td title="${o.nome}">${o.nome}</td><td>${stBadge(o.status)}</td><td>${BRL(o.investido)}</td><td>${NUM(o.imp)}</td><td>${PCT(o.ctr)}</td><td>${NUM(o.cliques)}</td><td>${NUM(o.visitas)}</td><td>${PCT(o.cr)}</td><td>${NUM(o.checkout)}</td><td>${NUM(o.vendas)}</td><td>${o.vendas?BRL(o.cpa):'—'}</td><td>${o.vendas?RS(o.roas):'—'}</td><td><span class="al ${b[1]}">${b[0]}</span></td>${cfg.link?`<td>${o.link?`<a class="vlink" href="${o.link}" target="_blank">🔗 ver</a>`:'—'}</td>`:''}</tr>`;
       }
       h+=`</tbody></table></div>`;
       document.getElementById('body').innerHTML=h;
       document.getElementById('updated').textContent='Atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
     }
 
-    // ── LP (funil por perfil) ─────────────────────────────────────────────────────
-    function lpAgg(rows){
-      let cost=0,imp=0,clk=0,pv=0,leads=0;
-      for(const r of rows){ cost+=r.cost;imp+=r.impressions;clk+=r.clicks;pv+=r.pageview;leads+=r.leads; }
-      return { investido:cost, imp, cliques:clk, pv, leads, ctr:div(clk,imp)*100, connect:div(pv,clk)*100, txlead:div(leads,pv)*100, cpl:div(cost,leads) };
-    }
+    // ── Funil / LP ────────────────────────────────────────────────────────────
     function lpDaily(rows){
       const map={};
-      for(const r of rows){ const k=dkey(r.date); const o=map[k]||(map[k]={clk:0,pv:0,imp:0,leads:0,inv:0}); o.clk+=r.clicks;o.pv+=r.pageview;o.imp+=r.impressions;o.leads+=r.leads;o.inv+=r.cost; }
+      for(const r of rows){ const k=dkey(r.date); const o=map[k]||(map[k]={imp:0,clk:0,vis:0,vend:0,inv:0}); o.imp+=r.impressions;o.clk+=r.clicks;o.vis+=r.visits;o.vend+=r.vendas;o.inv+=r.cost; }
       const keys=Object.keys(map).sort();
       return { labels:keys.map(k=>{const p=k.split('-');return p[2]+'/'+p[1];}),
         ctr:keys.map(k=>{const o=map[k];return o.imp?+(o.clk/o.imp*100).toFixed(2):null;}),
-        connect:keys.map(k=>{const o=map[k];return o.clk?+(o.pv/o.clk*100).toFixed(2):null;}),
-        cpl:keys.map(k=>{const o=map[k];return o.leads?+(o.inv/o.leads).toFixed(2):null;}) };
-    }
-    function lpLine(cid, labels, data, color, money){
+        connect:keys.map(k=>{const o=map[k];return o.clk?+(o.vis/o.clk*100).toFixed(2):null;}),
+        visitas:keys.map(k=>map[k].vis) }; }
+    function lpLine(cid, labels, data, color, pct){
       const el=document.getElementById(cid); if(!el) return;
-      charts.push(new Chart(el,{ type:'line',
-        data:{ labels, datasets:[{ data, borderColor:color, backgroundColor:color+'22', borderWidth:2, pointRadius:2, pointBackgroundColor:color, tension:.3, spanGaps:true, fill:true }] },
-        options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+(money?BRL(c.parsed.y):c.parsed.y+'%')}}},
-          scales:{ x:{grid:{color:'#ffffff08'},ticks:{color:'#9a8bb0',font:{size:9},maxTicksLimit:8}}, y:{grid:{color:'#ffffff08'},ticks:{color:'#9a8bb0',font:{size:9},callback:v=>money?'R$'+v:v+'%'},beginAtZero:true} } } }));
-    }
+      charts.push(new Chart(el,{ type:'line', data:{ labels, datasets:[{ data, borderColor:color, backgroundColor:color+'22', borderWidth:2, pointRadius:2, pointBackgroundColor:color, tension:.3, spanGaps:true, fill:true }] },
+        options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+(pct?c.parsed.y+'%':c.parsed.y)}}},
+          scales:{ x:{grid:{color:'#ffffff08'},ticks:{color:'#9a8bb0',font:{size:9},maxTicksLimit:8}}, y:{grid:{color:'#ffffff08'},ticks:{color:'#9a8bb0',font:{size:9},callback:v=>pct?v+'%':v},beginAtZero:true} } } })); }
     function renderLP(){
       killCharts();
-      const lps=[
-        {nome:'LP Malu', url:LP_MALU, rows:DATA.malu.filter(r=>inRange(r.date))},
-        {nome:'LP Hire', url:LP_HIRE, rows:DATA.hire.filter(r=>inRange(r.date))},
-      ].filter(l=>l.rows.some(r=>r.cost>0||r.impressions>0));
-      if(!lps.length){ document.getElementById('body').innerHTML='<div class="empty">Sem dados no período</div>';
-        document.getElementById('updated').textContent='Atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); return; }
-      const g=lpAgg(lps.reduce((a,l)=>a.concat(l.rows),[]));
-      let h=`<div class="lp-geral"><div class="lp-geral-lbl">GERAL (Malu + Hire)</div><div class="lp-geral-stats">
-        <div><div class="lp-meta-lbl">Total Gasto</div><div class="lp-meta-val">${BRL(g.investido)}</div></div>
-        <div><div class="lp-meta-lbl">CPL Médio</div><div class="lp-meta-val">${g.leads>0?BRL(g.cpl):'—'}</div></div>
-        <div><div class="lp-meta-lbl">Connect Rate</div><div class="lp-meta-val accent">${PCT(g.connect)}</div></div>
-        <div><div class="lp-meta-lbl">Total Leads</div><div class="lp-meta-val">${NUM(g.leads)}</div></div>
-      </div></div><div class="lp-grid">`;
-      const jobs=[];
-      lps.forEach((lp,i)=>{ const a=lpAgg(lp.rows), d=lpDaily(lp.rows);
-        const steps=[
-          {n:'IMPRESSÕES', v:a.imp, wt:100, wb:80, rate:'CTR '+PCT(a.ctr)},
-          {n:'CLIQUES NO LINK', v:a.cliques, wt:78, wb:56, rate:'CONNECT '+PCT(a.connect)},
-          {n:'PAGE VIEW (LP)', v:a.pv, wt:52, wb:34, rate:'TX LEAD '+PCT(a.txlead)},
-          {n:'LEADS', v:a.leads, wt:28, wb:22, rate:''},
-        ];
-        let fn='<div class="fn">';
-        for(let si=0;si<steps.length;si++){ const s=steps[si]; const tl=(100-s.wt)/2,tr=(100+s.wt)/2,br=(100+s.wb)/2,bl=(100-s.wb)/2; const L=34+si*8;
-          fn+=`<div class="fn-seg" style="clip-path:polygon(${tl}% 0,${tr}% 0,${br}% 100%,${bl}% 100%);background:linear-gradient(180deg,hsla(285,52%,${L}%,.92),hsla(285,52%,${L-7}%,.86))"><div class="fn-lbl">${s.n}</div><div class="fn-val">${NUM(s.v)}</div></div>`;
-          if(s.rate) fn+=`<div class="fn-rate"><span class="fn-pill">${s.rate}</span></div>`;
-        }
-        fn+='</div>';
-        h+=`<div class="lp-panel"><div class="lp-header"><div class="lp-header-left"><div class="lp-header-name">${lp.nome}</div><a class="lp-header-url" href="${lp.url}" target="_blank">${lp.url.replace('https://','')}</a></div>
-          <div class="lp-header-right">
-            <div><div class="lp-meta-lbl">Total Gasto</div><div class="lp-meta-val">${BRL(a.investido)}</div></div>
-            <div><div class="lp-meta-lbl">CPL</div><div class="lp-meta-val">${a.leads>0?BRL(a.cpl):'—'}</div></div>
-            <div><div class="lp-meta-lbl">Connect Rate</div><div class="lp-meta-val accent">${PCT(a.connect)}</div></div>
-          </div></div>
-          <div class="lp-body"><div class="lp-funnel-col">${fn}</div><div class="lp-charts-col">
-            <div class="lp-chart-card"><div class="lp-chart-title">CTR</div><div class="lp-chart-h"><canvas id="lpA${i}"></canvas></div></div>
-            <div class="lp-chart-card"><div class="lp-chart-title">Connect Rate</div><div class="lp-chart-h"><canvas id="lpB${i}"></canvas></div></div>
-            <div class="lp-chart-card"><div class="lp-chart-title">Custo por Lead</div><div class="lp-chart-h"><canvas id="lpC${i}"></canvas></div></div>
-          </div></div></div>`;
-        jobs.push({i,d});
-      });
-      h+=`</div>`;
+      const rows=DATA.rows.filter(r=>inRange(r.date));
+      if(!rows.length){ document.getElementById('body').innerHTML='<div class="empty">Sem dados no período</div>'; return; }
+      const a=agg(rows), d=lpDaily(rows);
+      let h=`<div class="lp-geral"><div class="lp-geral-lbl">CONGRESSO · MALU</div><div class="lp-geral-stats">
+        <div><div class="lp-meta-lbl">Total Gasto</div><div class="lp-meta-val">${BRL(a.investido)}</div></div>
+        <div><div class="lp-meta-lbl">Vendas</div><div class="lp-meta-val accent">${NUM(a.vendas)}</div></div>
+        <div><div class="lp-meta-lbl">Faturamento</div><div class="lp-meta-val">${BRL(a.faturamento)}</div></div>
+        <div><div class="lp-meta-lbl">ROAS</div><div class="lp-meta-val accent">${a.vendas?RS(a.roas):'—'}</div></div>
+      </div></div>`;
+      const steps=[
+        {n:'IMPRESSÕES', v:a.impressoes, rate:'CTR '+PCT(a.ctr)},
+        {n:'CLIQUES', v:a.cliques, rate:'CONNECT '+PCT(a.connect)},
+        {n:'VISITAS NO SITE', v:a.visitas, rate:'CARRINHO '+PCT(div(a.addcart,a.visitas)*100)},
+        {n:'ADIÇÕES AO CARRINHO', v:a.addcart, rate:'CHECKOUT '+PCT(div(a.checkout,a.addcart)*100)},
+        {n:'CHECKOUT', v:a.checkout, rate:'VENDA '+PCT(div(a.vendas,a.checkout)*100)},
+        {n:'VENDAS', v:a.vendas, rate:''},
+      ];
+      const wts=[100,82,64,48,34,24];
+      let fn='<div class="fn">';
+      for(let si=0;si<steps.length;si++){ const s=steps[si]; const wt=wts[si], wb=wts[si+1]!=null?wts[si+1]:wts[si]-8;
+        const tl=(100-wt)/2,tr=(100+wt)/2,br=(100+wb)/2,bl=(100-wb)/2; const L=52-si*4;
+        fn+=`<div class="fn-seg" style="clip-path:polygon(${tl}% 0,${tr}% 0,${br}% 100%,${bl}% 100%);background:linear-gradient(180deg,hsla(42,58%,${L}%,.95),hsla(42,58%,${L-6}%,.9))"><div class="fn-lbl">${s.n}</div><div class="fn-val">${NUM(s.v)}</div></div>`;
+        if(s.rate) fn+=`<div class="fn-rate"><span class="fn-pill">${s.rate}</span></div>`;
+      }
+      fn+='</div>';
+      h+=`<div class="lp-panel"><div class="lp-header"><div><div class="lp-header-name">LP Malu · Congresso</div><a class="lp-header-url" href="${LP_URL}" target="_blank">${LP_URL.replace('https://','')}</a></div>
+        <div class="lp-header-right">
+          <div><div class="lp-meta-lbl">CPA</div><div class="lp-meta-val">${a.vendas?BRL(a.cpa):'—'}</div></div>
+          <div><div class="lp-meta-lbl">Ticket</div><div class="lp-meta-val">${a.vendas?BRL(a.ticket):'—'}</div></div>
+          <div><div class="lp-meta-lbl">Connect</div><div class="lp-meta-val accent">${PCT(a.connect)}</div></div>
+        </div></div>
+        <div class="lp-body"><div class="lp-funnel-col">${fn}</div><div class="lp-charts-col">
+          <div class="lp-chart-card"><div class="lp-chart-title">CTR (Impr→Clique)</div><div class="lp-chart-h"><canvas id="lpA"></canvas></div></div>
+          <div class="lp-chart-card"><div class="lp-chart-title">Connect (Clique→Visita)</div><div class="lp-chart-h"><canvas id="lpB"></canvas></div></div>
+          <div class="lp-chart-card"><div class="lp-chart-title">Visitas por dia</div><div class="lp-chart-h"><canvas id="lpC"></canvas></div></div>
+        </div></div></div>`;
       document.getElementById('body').innerHTML=h;
-      jobs.forEach(({i,d})=>{ lpLine('lpA'+i,d.labels,d.ctr,'#c07be0'); lpLine('lpB'+i,d.labels,d.connect,'#a855c8'); lpLine('lpC'+i,d.labels,d.cpl,'#f97316',true); });
+      lpLine('lpA',d.labels,d.ctr,'#a855f7',true); lpLine('lpB',d.labels,d.connect,'#d9b45a',true); lpLine('lpC',d.labels,d.visitas,'#7fe0a8',false);
       document.getElementById('updated').textContent='Atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
     }
 
@@ -515,18 +456,16 @@
     async function loadAll(){
       document.getElementById('body').innerHTML='<div class="loading">Carregando dados da planilha…</div>';
       try{
-        const [tMalu,tHire,tMetas]=await Promise.all([
-          gviz(SHEET_CTI,'sheet='+encodeURIComponent('Malu Meta')),
-          gviz(SHEET_CTI,'sheet='+encodeURIComponent('Hire Meta')),
+        const [tMalu,tMetas]=await Promise.all([
+          gviz(SHEET_CTI,'gid='+TAB_MALU),
           gviz(SHEET_CTI,'sheet='+encodeURIComponent('Metas')).catch(()=>null),
         ]);
-        DATA.malu=metaRows(tMalu); DATA.hire=metaRows(tHire);
+        DATA.rows=metaRows(tMalu);
         DATA.metas=tMetas?readMetas(tMetas):{...METAS_DEFAULT};
         route();
       }catch(e){ document.getElementById('body').innerHTML='<div class="empty err">Erro ao carregar: '+e.message+'</div>'; }
     }
     loadAll();
-
   </script>
 </body>
 </html>
