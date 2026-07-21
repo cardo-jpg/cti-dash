@@ -12,6 +12,7 @@
       --gold:#d9b45a; --gold-l:#f2d98a; --gold-d:#a98430;
       --text:#f4eefb; --muted:#b0a0c8; --red:#f0788a; --green:#7fe0a8;
     }
+    html{ font-size:130%; }
     *{ box-sizing:border-box; }
     body{ margin:0; color:var(--text); min-height:100vh; font-family:'Georgia','Times New Roman',serif; -webkit-font-smoothing:antialiased;
       background:
@@ -20,7 +21,7 @@
         radial-gradient(900px 560px at 50% 118%, rgba(124,58,237,.14), transparent 60%),
         #0c0616; }
     .num, table, .gauge-leg, .k, .v, .card, input, button, .tab, .preset { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; }
-    .page{ max-width:1280px; margin:0 auto; padding:22px 20px 40px; }
+    .page{ max-width:1560px; margin:0 auto; padding:22px 20px 40px; }
     .top{ display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:22px; }
     .brand{ display:flex; flex-direction:column; gap:2px; }
     .brand .kicker{ font-family:-apple-system,sans-serif; font-size:.7rem; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); }
@@ -46,16 +47,16 @@
     .tab:hover{ color:var(--text); }
     .tab.active{ color:var(--gold-l); border-bottom-color:var(--gold); }
 
-    .gauges{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-bottom:20px; }
+    .gauges{ display:grid; grid-template-columns:repeat(auto-fit,minmax(19rem,1fr)); gap:16px; margin-bottom:20px; }
     .gauge-card{ background:linear-gradient(165deg,rgba(70,35,110,.4),rgba(30,16,52,.6)); border:1px solid rgba(217,180,90,.22); border-radius:18px; padding:22px 20px 18px; text-align:center; box-shadow:0 10px 40px rgba(60,20,110,.28); }
     .gauge-title{ font-size:.78rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); }
     .gauge-sub{ font-size:.66rem; color:var(--muted); margin-top:3px; }
-    .gauge-wrap{ position:relative; margin:6px auto 4px; max-width:230px; }
-    .gauge-svg{ width:100%; display:block; }
-    .gauge-track{ fill:none; stroke:rgba(255,255,255,.08); stroke-width:13; stroke-linecap:round; }
-    .gauge-fill{ fill:none; stroke-width:13; stroke-linecap:round; transition:stroke-dashoffset .6s; }
-    .gauge-pct{ position:absolute; top:52%; left:0; right:0; transform:translateY(-50%); font-family:-apple-system,sans-serif; font-size:2.5rem; font-weight:800; color:#fff; }
-    .gauge-leg{ font-family:-apple-system,sans-serif; font-size:11px; font-weight:600; }
+    .gauge-wrap{ position:relative; margin:6px auto 4px; max-width:15rem; }
+    .gauge-svg{ width:100%; display:block; overflow:visible; }
+    .gauge-track{ fill:none; stroke:rgba(255,255,255,.08); stroke-width:12; stroke-linecap:round; }
+    .gauge-fill{ fill:none; stroke-width:12; stroke-linecap:round; transition:stroke-dashoffset .6s; }
+    .gauge-pct{ position:absolute; top:50%; left:0; right:0; transform:translateY(-52%); font-family:-apple-system,sans-serif; font-size:2.3rem; font-weight:800; color:#fff; }
+    .gauge-leg{ font-family:-apple-system,sans-serif; font-size:9px; font-weight:600; }
     .gauge-stats{ display:flex; justify-content:center; gap:26px; margin-top:8px; }
     .gauge-stat-l{ font-size:.6rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
     .gauge-stat-v{ font-family:-apple-system,sans-serif; font-size:1.15rem; font-weight:800; color:#fff; }
@@ -111,7 +112,7 @@
     .fn-val{ font-family:-apple-system,sans-serif; font-size:1.05rem; font-weight:800; color:#1e0f05; }
     .fn-rate{ text-align:center; margin:1px 0; }
     .fn-pill{ font-family:-apple-system,sans-serif; font-size:.6rem; font-weight:700; color:var(--purple-l); background:rgba(124,58,237,.18); border:1px solid rgba(124,58,237,.4); padding:2px 9px; border-radius:20px; }
-    .lp-charts-col{ display:grid; grid-template-columns:1fr 1fr; gap:12px; align-content:start; }
+    .lp-charts-col{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; align-content:start; }
     .lp-chart-card{ background:rgba(30,18,48,.5); border:1px solid var(--border); border-radius:12px; padding:13px 15px; }
     .lp-chart-title{ font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:9px; }
     .lp-chart-h{ height:112px; }
@@ -261,12 +262,12 @@
       const pct = meta? Math.min(100,Math.max(0,atual/meta*100)) : 0;
       const st = stats ? `<div class="gauge-stats">${stats.map(s=>`<div><div class="gauge-stat-l">${s[0]}</div><div class="gauge-stat-v ${s[2]||''}">${s[1]}</div></div>`).join('')}</div>` : '';
       return `<div class="gauge-card"><div class="gauge-title">${title}</div>${sub?`<div class="gauge-sub">${sub}</div>`:''}
-        <div class="gauge-wrap"><svg class="gauge-svg" viewBox="0 0 200 140">
+        <div class="gauge-wrap"><svg class="gauge-svg" viewBox="-10 0 220 140">
           <path class="gauge-track" d="M5,110 A95,95,0,0,1,195,110"/>
           <path class="gauge-fill" d="M5,110 A95,95,0,0,1,195,110" stroke="url(#pg)" stroke-dasharray="${ARC} ${ARC}" stroke-dashoffset="${ARC*(1-pct/100)}"/>
           <defs><linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#d9b45a"/></linearGradient></defs>
-          <text x="5" y="132" class="gauge-leg" text-anchor="middle" fill="rgba(255,255,255,.7)">${fmt(atual)}</text>
-          <text x="195" y="132" class="gauge-leg" text-anchor="middle" fill="rgba(255,255,255,.35)">${meta?fmt(meta):'—'}</text>
+          <text x="0" y="132" class="gauge-leg" text-anchor="start" fill="rgba(255,255,255,.7)">${fmt(atual)}</text>
+          <text x="200" y="132" class="gauge-leg" text-anchor="end" fill="rgba(255,255,255,.4)">${meta?fmt(meta):'—'}</text>
         </svg><div class="gauge-pct">${pct.toLocaleString('pt-BR',{maximumFractionDigits:1})}%</div></div>${st}</div>`;
     }
     function card(k,v,cls,prev,tax){ return `<div class="card ${cls&&cls.includes('hl')?'hl':''}"><div class="k">${k}</div>${prev?`<div class="prev">${prev}</div>`:''}<div class="v ${cls||''}">${v}</div>${tax?`<div class="tax">${tax}</div>`:''}</div>`; }
@@ -383,12 +384,12 @@
       let h=`<div class="lbl">${cfg.title} (${list.length}) · meta CPA ${BRL(DATA.metas.cpa)}</div>
         <input class="w3filter" value="${(_fq[tab]||'').replace(/"/g,'&quot;')}" placeholder="Filtrar por nome…" oninput="_fq['${tab}']=this.value.toLowerCase();document.querySelectorAll('.${cfg.row}').forEach(function(tr){tr.style.display=tr.dataset.n.indexOf(_fq['${tab}'])>=0?'':'none';});">
         <div class="twrap"><table><thead><tr>
-        ${sortTh(tab,'nome',cfg.label,1)}${sortTh(tab,'status','Status')}${sortTh(tab,'investido','Investido')}${sortTh(tab,'imp','Impr.')}${sortTh(tab,'ctr','CTR')}${sortTh(tab,'cliques','Cliques')}${sortTh(tab,'visitas','Visitas')}${sortTh(tab,'cr','Connect')}${sortTh(tab,'checkout','Checkout')}${sortTh(tab,'vendas','Vendas')}${sortTh(tab,'cpa','CPA')}${sortTh(tab,'roas','ROAS')}<th>Alerta</th>${cfg.link?'<th>Link</th>':''}
+        ${sortTh(tab,'nome',cfg.label,1)}${sortTh(tab,'status','Status')}${sortTh(tab,'investido','Investido')}${sortTh(tab,'imp','Impr.')}${sortTh(tab,'cliques','Cliques')}${sortTh(tab,'visitas','Visitas')}${sortTh(tab,'vendas','Vendas')}${sortTh(tab,'cpa','CPA')}${sortTh(tab,'roas','ROAS')}${cfg.link?'<th>Link</th>':''}
       </tr></thead><tbody>`;
-      const cols=cfg.link?14:13;
+      const cols=cfg.link?10:9;
       if(!list.length) h+=`<tr><td colspan="${cols}" class="empty">Sem dados no período</td></tr>`;
-      else for(const o of list){ const b=AL[o.al];
-        h+=`<tr class="${cfg.row}" data-n="${(o.nome||'').toLowerCase()}"><td title="${o.nome}">${o.nome}</td><td>${stBadge(o.status)}</td><td>${BRL(o.investido)}</td><td>${NUM(o.imp)}</td><td>${PCT(o.ctr)}</td><td>${NUM(o.cliques)}</td><td>${NUM(o.visitas)}</td><td>${PCT(o.cr)}</td><td>${NUM(o.checkout)}</td><td>${NUM(o.vendas)}</td><td>${o.vendas?BRL(o.cpa):'—'}</td><td>${o.vendas?RS(o.roas):'—'}</td><td><span class="al ${b[1]}">${b[0]}</span></td>${cfg.link?`<td>${o.link?`<a class="vlink" href="${o.link}" target="_blank">🔗 ver</a>`:'—'}</td>`:''}</tr>`;
+      else for(const o of list){
+        h+=`<tr class="${cfg.row}" data-n="${(o.nome||'').toLowerCase()}"><td title="${o.nome}">${o.nome}</td><td>${stBadge(o.status)}</td><td>${BRL(o.investido)}</td><td>${NUM(o.imp)}</td><td>${NUM(o.cliques)}</td><td>${NUM(o.visitas)}</td><td>${NUM(o.vendas)}</td><td>${o.vendas?BRL(o.cpa):'—'}</td><td>${o.vendas?RS(o.roas):'—'}</td>${cfg.link?`<td>${o.link?`<a class="vlink" href="${o.link}" target="_blank">🔗 ver</a>`:'—'}</td>`:''}</tr>`;
       }
       h+=`</tbody></table></div>`;
       document.getElementById('body').innerHTML=h;
